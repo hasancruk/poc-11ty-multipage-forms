@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <meta name="generator" content="Eleventy v2.0.1">
+    <title>Support Us</title>
+    
+    <style>@layer base;
+
+@layer base {
+
+}</style>
+		<script></script>
+  </head>
+  <body>
+    <div>
+  Cancer Research UK Header
+</div>
+
+    <main><form method="POST">
+  <fieldset>
+    <legend>
+      <h2>Donation amount</h2>
+      <p>Please choose an amount for your donation.</p>
+    </legend>
+    <div>
+      <input type="radio" id="amount10" name="donation-amount" value="10">
+      <label for="amount10">£10</label>
+      <input type="radio" id="amount20" name="donation-amount" value="20">
+      <label for="amount20">£20</label>
+      <input type="radio" id="amount30" name="donation-amount" value="30">
+      <label for="amount30">£30</label>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>
+      <h2>Donation type</h2>
+      <p>Please choose your donation type.</p>
+    </legend>
+    <div>
+      <input type="radio" id="type-yes" name="donation-type" value="true">
+      <label for="type-yes">Yes</label>
+      <input type="radio" id="type-no" name="donation-type" value="false">
+      <label for="type-no">No</label>
+    </div>
+  </fieldset>
+
+  <input type="submit" value="Continue">
+</form>
+</main>
+    <div>
+  Cancer Research UK Footer
+</div>
+
+    <script>const formElement = document.querySelector("form");
+
+  formElement.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.target);
+    const data = Object.fromEntries(formData);
+    const existingData = sessionStorage.getItem("support-us");
+    sessionStorage.setItem("support-us", JSON.stringify({
+      ...JSON.parse(existingData),
+      ...data,
+    }));
+    
+    window.location.href = "/details";
+  });</script>
+  
+
+</body>
+</html>

@@ -1,0 +1,21 @@
+---
+layout: layouts/base.webc
+---
+
+<script webc:bucket="defer">
+  const amountSpan = document.querySelector("#donated-amount");
+  const formData = JSON.parse(sessionStorage.getItem("support-us"));
+  const amount = formData?.["donation-amount"];
+
+  if (amount) {
+    const num = parseFloat(amount);
+    amountSpan.textContent = num.toFixed(2);
+  }
+</script>
+
+<section>
+  <h2>Thank you for your donation of <span>£</span><span id="donated-amount">0.00</span></h2>
+  <p>Your gift will help us continue our life-saving research in the fight against cancer.</p>
+</section>
+
+

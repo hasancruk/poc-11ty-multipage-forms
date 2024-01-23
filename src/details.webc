@@ -1,0 +1,72 @@
+---
+layout: layouts/base.webc
+---
+
+<script webc:bucket="defer">
+  const formElement = document.querySelector("form");
+  const backButton = document.querySelector("#back-btn");
+
+  backButton.addEventListener("click", () => {
+    history.back();    
+  });
+
+  formElement.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.target);
+    const data = Object.fromEntries(formData);
+    const existingData = sessionStorage.getItem("support-us");
+    sessionStorage.setItem("support-us", JSON.stringify({
+      ...JSON.parse(existingData),
+      ...data,
+    }));
+
+    window.location.href = "/payment";
+  });
+</script>
+
+<form method="POST">
+  <section>
+    <h2>Details</h2>
+    <div>
+      <label for="supporter-name">Name</label>
+      <input type="text" id="supporter-name" name="supporter-name">
+      
+      <label for="supporter-email">Email</label>
+      <input type="text" id="supporter-email" name="supporter-email">
+    </div>
+  </section>
+
+  <section>
+    <h2>Communication consent</h2>
+    <p>
+      <span>Help us bring forward the day when all cancers are cured. Hear about our latest breakthroughs, campaigns and how you can support our life saving work.</span>
+      <span>We may contact you by post or phone unless you select ‘No’ below.</span>
+    </p>
+    <div>
+      <fieldset>
+        <legend>
+          <h3>Email</h3>
+        </legend>
+        <input type="radio" id="comms-email-yes" name="comms-email" value="yes">
+        <label for="comms-email-yes">Yes</label>
+        <input type="radio" id="comms-email-no" name="comms-email" value="no">
+        <label for="comms-email-no">No</label>
+      </fieldset>
+      <fieldset>
+        <legend>
+          <h3>Phone</h3>
+        </legend>
+        <input type="radio" id="comms-phone-yes" name="comms-phone" value="yes">
+        <label for="comms-phone-yes">Yes</label>
+        <input type="radio" id="comms-phone-no" name="comms-phone" value="no">
+        <label for="comms-phone-no">No</label>
+      </fieldset>
+    </div>
+  </section>
+
+  <input type="submit" value="Continue">
+</form>
+
+<button id="back-btn">Back</button>
+

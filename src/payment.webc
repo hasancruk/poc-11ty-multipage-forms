@@ -1,0 +1,47 @@
+---
+layout: layouts/base.webc
+---
+
+<script webc:bucket="defer">
+  const formElement = document.querySelector("form");
+  const backButton = document.querySelector("#back-btn");
+
+  backButton.addEventListener("click", () => {
+    history.back();    
+  });
+
+  formElement.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.target);
+    const data = Object.fromEntries(formData);
+    const existingData = sessionStorage.getItem("support-us");
+    sessionStorage.setItem("support-us", JSON.stringify({
+      ...JSON.parse(existingData),
+      ...data,
+    }));
+
+    window.location.href = "/thanks";
+  });
+</script>
+
+<form method="POST">
+  <section>
+    <h2>Payment</h2>
+    <fieldset>
+      <legend>
+        <h3>How would you like to donate?</h3>
+      </legend>
+      <input type="radio" id="credit-card" name="payment-method" value="credit-card">
+      <label for="credit-card">Credit Card</label>
+      <input type="radio" id="paypal" name="payment-method" value="paypal">
+      <label for="paypal">PayPal</label>
+      <input type="radio" id="google-pay" name="payment-method" value="google-pay">
+      <label for="google-pay">Google Pay</label>
+    </fieldset>
+  </section>
+
+  <input type="submit" value="Continue">
+</form>
+
+<button id="back-btn">Back</button>
