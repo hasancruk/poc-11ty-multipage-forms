@@ -3,25 +3,44 @@ layout: layouts/base.webc
 ---
 
 <script webc:bucket="defer">
-  const formElement = document.querySelector("form");
-  const backButton = document.querySelector("#back-btn");
+  function hydrateForm() {
+    const cache = sessionStorage.getItem("support-us");
 
-  backButton.addEventListener("click", () => {
-    history.back();    
-  });
+    if (!cache) return;
 
-  formElement.addEventListener("submit", (e) => {
-    e.preventDefault();
+    const data = JSON.parse(cache);
 
-    const formData = new FormData(e.target);
-    const data = Object.fromEntries(formData);
-    const existingData = sessionStorage.getItem("support-us");
-    sessionStorage.setItem("support-us", JSON.stringify({
-      ...JSON.parse(existingData),
-      ...data,
-    }));
+    const method = data?.["payment-method"];
 
-    window.location.href = "/thanks";
+    if (method) {
+      const inputElement = document.querySelector(`#${method}`);
+      inputElement.checked = true;
+    }
+  }
+
+  window.addEventListener("DOMContentLoaded", () => {
+    const formElement = document.querySelector("form");
+    const backButton = document.querySelector("#back-btn");
+
+    hydrateForm();
+
+    backButton.addEventListener("click", () => {
+      history.back();    
+    });
+
+    formElement.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const formData = new FormData(e.target);
+      const data = Object.fromEntries(formData);
+      const existingData = sessionStorage.getItem("support-us");
+      sessionStorage.setItem("support-us", JSON.stringify({
+        ...JSON.parse(existingData),
+        ...data,
+      }));
+
+      window.location.href = "/thanks";
+    });
   });
 </script>
 

@@ -3,25 +3,62 @@ layout: layouts/base.webc
 ---
 
 <script webc:bucket="defer">
-  const formElement = document.querySelector("form");
-  const backButton = document.querySelector("#back-btn");
+  function hydrateForm() {
+    const cache = sessionStorage.getItem("support-us");
 
-  backButton.addEventListener("click", () => {
-    history.back();    
-  });
+    if (!cache) return;
 
-  formElement.addEventListener("submit", (e) => {
-    e.preventDefault();
+    const data = JSON.parse(cache);
 
-    const formData = new FormData(e.target);
-    const data = Object.fromEntries(formData);
-    const existingData = sessionStorage.getItem("support-us");
-    sessionStorage.setItem("support-us", JSON.stringify({
-      ...JSON.parse(existingData),
-      ...data,
-    }));
+    const name = data?.["supporter-name"];
+    const email = data?.["supporter-email"];
+    const commsEmail = data?.["comms-email"];
+    const commsPhone = data?.["comms-phone"];
 
-    window.location.href = "/payment";
+    if (name) {
+      const inputElement = document.querySelector("#supporter-name");
+      inputElement.value = name;
+    }
+
+    if (email) {
+      const inputElement = document.querySelector("#supporter-email");
+      inputElement.value = email;
+    }
+
+    if (commsEmail) {
+      const inputElement = document.querySelector(`#comms-email-${commsEmail}`);
+      inputElement.checked = true;
+    }
+    
+    if (commsPhone) {
+      const inputElement = document.querySelector(`#comms-phone-${commsPhone}`);
+      inputElement.checked = true;
+    }
+  }
+
+  window.addEventListener("DOMContentLoaded", () => {
+    const formElement = document.querySelector("form");
+    const backButton = document.querySelector("#back-btn");
+
+    hydrateForm();
+
+    backButton.addEventListener("click", () => {
+      history.back();    
+    });
+
+    formElement.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const formData = new FormData(e.target);
+      const data = Object.fromEntries(formData);
+      const existingData = sessionStorage.getItem("support-us");
+      sessionStorage.setItem("support-us", JSON.stringify({
+        ...JSON.parse(existingData),
+        ...data,
+      }));
+
+      window.location.href = "/payment";
+    });
   });
 </script>
 
